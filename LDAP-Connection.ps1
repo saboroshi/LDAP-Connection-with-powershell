@@ -22,22 +22,22 @@ function LDAP-Connection
     
     Add-Type -Path 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.DirectoryServices.Protocols.dll'
 
-	# Létrehozzuk a hitelesítési beállításokat
+	# We will create the authentication settings
 	$ldapDirectoryIdentifier = New-Object System.DirectoryServices.Protocols.LdapDirectoryIdentifier($ldapServer)
 	
-	# Próbáljuk meg csatlakozni az LDAP szerverhez
+	# Let's try to connect to the LDAP server
 	try
 	{
 		$ldapConnection = New-Object System.DirectoryServices.Protocols.LdapConnection($ldapDirectoryIdentifier)
-		$ldapConnection.AuthType = [System.DirectoryServices.Protocols.AuthType]::Basic # Novell szerverek esetén az AuthType értékét 'Basic'-re kell állítani
+		$ldapConnection.AuthType = [System.DirectoryServices.Protocols.AuthType]::Basic # For Microfocus Novell servers, the value of AuthType must be set to 'Basic'
 		$ldapConnection.Bind()
 		
-		# Keressük meg a felhasználó DN-jét
+		# Let's find the DN of the user
 		$searchRequest = New-Object System.DirectoryServices.Protocols.SearchRequest("", "(cn=$ldapUser)", "sub", $null)
 		$searchResponse = $ldapConnection.SendRequest($searchRequest) -as [System.DirectoryServices.Protocols.SearchResponse]
 		$ldapUserDN = $searchResponse.Entries[0].DistinguishedName
 		
-		# Próbáljuk meg hitelesíteni a felhasználót
+		# Let's try to authenticate the user
 		$ldapNetworkCredential = New-Object System.Net.NetworkCredential($ldapUserDN, $ldapPassword)
 		$ldapConnection.Credential = $ldapNetworkCredential
 		$ldapConnection.Bind()
