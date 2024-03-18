@@ -5,7 +5,7 @@
 	 Created by:   	Cservenyi Szabolcs
 	 Organization: 	
 	 Filename:     	LDAP-Connection.psm1
-	 ReleaseNotes:	This module helps you connect to an MSSQL server and database.
+	 ReleaseNotes:	This module helps you connect to an LDAP server.
 	 Version:		1.0
 	-------------------------------------------------------------------------
 	 Module Name: 	LDAP-Connection
